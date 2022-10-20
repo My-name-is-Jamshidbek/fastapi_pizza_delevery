@@ -1,8 +1,13 @@
 from sqlalchemy import create_engine
-from sqlalchemy.orm import declarative_base,sessionmaker
+from sqlalchemy.orm import sessionmaker, declarative_base
 
+SQLALCHEMY_DATABASE_URI = "sqlite:///pizza_delivery.db"
 
-engine = create_engine("postgresql://postgres:postgres@db:5432/pizza_delivery",
-                       echo = True)
 Base = declarative_base()
-session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+engine = create_engine(  # 2
+    SQLALCHEMY_DATABASE_URI,
+    # required for sqlite
+    connect_args={"check_same_thread": False},
+)
+Session = sessionmaker(autocommit=False, autoflush=False, bind=engine)
